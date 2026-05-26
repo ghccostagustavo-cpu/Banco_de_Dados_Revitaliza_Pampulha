@@ -1,6 +1,7 @@
 OBSERVAÇÕES QUANTO À FIDELIDADE DOS DADOS: Modifiquei caminhos e nomes de arquivos, bancos e tabelas que julguei serem desnecessários pro repositório, além de ser uma medida de segurança. Estrutura é universal.
 
-Softwares utilizados: VSCode, DBeaver (cliente SQLite), QGIS.
+Softwares utilizados: VSCode, DBeaver (cliente SQLite), QGIS, Ollama OpenAI.
+Linguagem: 100% Python.
 
 Funcionalidades:
 
@@ -13,8 +14,9 @@ Funcionalidades:
 O script "resolvendo_irregularidades" usa de fuzzy matching pra tratar de erros de despadronização e erros de digitação. Exemplo: "RUAA|NUMERO2|VILALUGAR" é o mesmo endereço de de "RUAA|NUMERO2|LUGAR", porém o computador lê como informações completamente diferentes. O fuzzy matching usa de comparação e porcentagem para determinar se é erro de digitação ou informações totalmente divergentes, de fato. Este script de auditoria pega as diferenças de digitação e atribui o valor padrão correto pro valor padrão incorreto no banco de dados. 
 Além disso, usei estratégias para evitar SQL injections. Apesar de ser improvável no meu ambiente de trabalho, foi uma forma de estudo e de conhecer essas boas práticas.
 
-Observações quanto ao uso de inteligência artificial: A IA foi usada nesse projeto na parte de otimização de alguns códigos, correções eventuais, algumas revisões e na sugestão de algumas funcionalidades que eu não tinha domínio e que foram de grande ajuda (Ex. converter as coordenadas pra WKT, uso do módulo re, etc).
+Adicionei o script "Analista_Automatico_git". Esse script é, na minha opinião, muito bacana pro projeto e pra qualquer outro. (O menor e mais legal, diga-se de passagem). Ele é o que o nome diz, um analista de dados de I.A. Um conversor de linguagem natural pra SQL! O usuário vai digitar uma consulta desejada em linguagem natural, a I.A vai interpretar, transformar em SQL, executar o comando SQL (com as necessárias barreiras para a segurança, instruí a IA a não aceitar comandos que alterem, modifiquem ou excluam qualquer dado). Temporariamente, os dados serão exibidos no terminal. Ainda trabalhando pra exibir isso de uma forma mais visual e amigável (convenhamos, o terminal não é).
 
-Atualização do projeto: Estou migrando o banco de dados de SQLite para PostgreSQL. Demais alterações/adições nos scripts, vou atualizando aqui.
+
+Observações quanto ao uso de inteligência artificial: A IA foi usada nesse projeto na parte de otimização de alguns códigos, correções eventuais, algumas revisões e na sugestão de algumas funcionalidades que eu não tinha domínio e que foram de grande ajuda (Ex. converter as coordenadas pra WKT, uso do módulo re, etc).
 
 Dúvidas ou sugestões: [LinkedIn](linkedin.com/in/gustavo-costa-comp/) ou no contato do github mesmo.

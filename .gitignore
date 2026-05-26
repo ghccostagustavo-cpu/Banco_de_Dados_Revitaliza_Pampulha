@@ -1,5 +1,9 @@
 #Medidas de segurança para evitar o upload de arquivos sensíveis ou desnecessários para o repositório.
 
+.env
+*.db
+loguerys.txt
+
 *.db
 *.sqlite
 *.sqlite3

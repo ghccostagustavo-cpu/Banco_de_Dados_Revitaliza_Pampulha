@@ -1,22 +1,24 @@
-#Medidas de segurança para evitar o upload de arquivos sensíveis ou desnecessários para o repositório.
+# Ambiente Python
+.venv/
+__pycache__/
 
-.env
-*.db
-loguerys.txt
-
+# Bancos locais
 *.db
 *.sqlite
 *.sqlite3
 
+# Arquivos de dados e planilhas operacionais
 *.xlsx
 *.xls
 *.csv
 ~$*.xlsx
 
-*.txt
+# Logs operacionais
 *.log
-__pycache__/
+loguerys.txt
+log_integracao_auto.txt
+
+# Arquivos de ambiente e IDE
+.env
 .vscode/
 .idea/
-
-log_integracao_auto.txt

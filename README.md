@@ -1,22 +1,122 @@
-OBSERVAÇÕES QUANTO À FIDELIDADE DOS DADOS: Modifiquei caminhos e nomes de arquivos, bancos e tabelas que julguei serem desnecessários pro repositório, além de ser uma medida de segurança. Estrutura é universal.
+# Banco de Dados Revitaliza Pampulha
 
-Softwares utilizados: VSCode, DBeaver (cliente SQLite), QGIS, Ollama OpenAI.
-Linguagem: 100% Python.
+## Visão Geral
+Este repositório reúne scripts Python para apoio operacional ao projeto Revitaliza Pampulha (COPASA), com foco em:
+- tratamento e padronização de dados;
+- sincronização de planilhas para base SQLite;
+- auditoria de inconsistências cadastrais;
+- migração de tabelas para PostgreSQL;
+- preparação de dados para uso em contexto GIS.
 
-Funcionalidades:
+Os caminhos de arquivos, nomes de tabelas e parâmetros de conexão estão configurados com valores de exemplo e devem ser ajustados para o ambiente de execução.
 
- O script "comparacao_matricula" serviu para uma função bem específica que é o upload de uma tabela no banco de dados com uma comparação que estava meio difícil de fazer pelo cliente SQL.
+## Objetivos
+- Padronizar e consolidar dados de campo e adesão.
+- Automatizar cargas periódicas para SQLite.
+- Identificar e corrigir irregularidades em chaves de endereço.
+- Permitir consultas assistidas por linguagem natural com controle de segurança.
+- Viabilizar migração de dados para PostgreSQL.
 
- O script "sincronia_auto" provavelmente é o mais importante, ele integra as planilhas preenchidas em tempo real ao banco de dados, basta executar o script ou adicionar ao agendador de tarefas. Além da integração, ele já jogas as planilhas tratadas em formato de tabela e com uma chave em comum para cada endereço em relação a todas tabelas.
+## Estrutura do Repositório
+```text
+.
+├── src/
+│   ├── etl/
+│   │   ├── adesao_tratada.py
+│   │   ├── comparacao_matricula.py
+│   │   ├── resolvendo_irregularidades.py
+│   │   └── analista_automatico.py
+│   ├── sync/
+│   │   ├── sincronia_auto.py
+│   │   └── sincronia_cadastro_auto.py
+│   └── migration/
+│       └── migracao.py
+├── requirements.txt
+├── README.md
+└── LICENSE
+```
 
- O script "sincronia_CADASTRO_auto" tem uma sacada muito legal, pega a planilha geral da Copasa, com mais de 250K linhas e lança no banco de dados sem as colunas desnecessárias. Além de estar num banco SQLite, que já acelera as consultas, eu tratei as coordenas para WKT, formato aceito no QGIS. A tabela, portanto, está 100% georreferenciada. Ele está à parte por que é um script que mexe com muitos dados e não usaremos ele com frequência.
+## Requisitos
+- Python 3.10 ou superior
+- Ambiente virtual Python (recomendado)
+- Banco SQLite local
+- Acesso a instância PostgreSQL (para migração)
+- Arquivos Excel de entrada conforme layout esperado em cada script
 
-O script "resolvendo_irregularidades" usa de fuzzy matching pra tratar de erros de despadronização e erros de digitação. Exemplo: "RUAA|NUMERO2|VILALUGAR" é o mesmo endereço de de "RUAA|NUMERO2|LUGAR", porém o computador lê como informações completamente diferentes. O fuzzy matching usa de comparação e porcentagem para determinar se é erro de digitação ou informações totalmente divergentes, de fato. Este script de auditoria pega as diferenças de digitação e atribui o valor padrão correto pro valor padrão incorreto no banco de dados. 
-Além disso, usei estratégias para evitar SQL injections. Apesar de ser improvável no meu ambiente de trabalho, foi uma forma de estudo e de conhecer essas boas práticas.
+## Instalação
+```bash
+git clone https://github.com/ghccostagustavo-cpu/Banco_de_Dados_Revitaliza_Pampulha.git
+cd Banco_de_Dados_Revitaliza_Pampulha
 
-Adicionei o script "Analista_Automatico_git". Esse script é, na minha opinião, muito bacana pro projeto e pra qualquer outro. (O menor e mais legal, diga-se de passagem). Ele é o que o nome diz, um analista de dados de I.A. Um conversor de linguagem natural pra SQL! O usuário vai digitar uma consulta desejada em linguagem natural, a I.A vai interpretar, transformar em SQL, executar o comando SQL (com as necessárias barreiras para a segurança, instruí a IA a não aceitar comandos que alterem, modifiquem ou excluam qualquer dado). Temporariamente, os dados serão exibidos no terminal. Ainda trabalhando pra exibir isso de uma forma mais visual e amigável (convenhamos, o terminal não é).
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 
+pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-Observações quanto ao uso de inteligência artificial: A IA foi usada nesse projeto na parte de otimização de alguns códigos, correções eventuais, algumas revisões e na sugestão de algumas funcionalidades que eu não tinha domínio e que foram de grande ajuda (Ex. converter as coordenadas pra WKT, uso do módulo re, etc).
+## Como Executar
+Antes da execução, ajuste os caminhos e nomes de tabela diretamente em cada script.
 
-Dúvidas ou sugestões: [LinkedIn](linkedin.com/in/gustavo-costa-comp/) ou no contato do github mesmo.
+### 1) Sincronização principal (baixas, adesão, baixas secundárias e caça esgoto)
+```bash
+python src/sync/sincronia_auto.py
+```
+
+### 2) Sincronização de cadastro geográfico
+```bash
+python src/sync/sincronia_cadastro_auto.py
+```
+
+### 3) Tratamento de base de adesão
+```bash
+python src/etl/adesao_tratada.py
+```
+
+### 4) Comparação de matrícula entre bases
+```bash
+python src/etl/comparacao_matricula.py
+```
+
+### 5) Correção de irregularidades por similaridade de chave
+```bash
+python src/etl/resolvendo_irregularidades.py
+```
+
+### 6) Migração de tabelas SQLite para PostgreSQL
+```bash
+python src/migration/migracao.py
+```
+
+### 7) Consulta em linguagem natural convertida para SQL (somente SELECT)
+```bash
+python src/etl/analista_automatico.py
+```
+
+## Fluxo de Dados (resumo)
+1. Leitura de planilhas operacionais (Excel).
+2. Padronização de campos críticos (logradouro, número, complemento, matrícula e bairro).
+3. Geração de chave composta para integração entre bases.
+4. Carga/atualização de tabelas em SQLite.
+5. Auditoria e correção de inconsistências em chaves.
+6. Migração de tabelas consolidadas para PostgreSQL quando necessário.
+
+## Banco de Dados
+### SQLite (estado atual)
+- Base operacional principal para integração e consultas locais.
+- Escrita de tabelas via `pandas.to_sql` com estratégia de substituição (`if_exists='replace'`) nos fluxos atuais.
+
+### Migração para PostgreSQL
+- Script dedicado em `src/migration/migracao.py`.
+- Leitura das tabelas do SQLite e carga no PostgreSQL em nomes normalizados (minúsculo).
+- Necessário configurar corretamente string de conexão, permissões e ambiente do servidor.
+
+## Boas Práticas / Observações Operacionais
+- Não versionar arquivos de banco, planilhas ou logs operacionais.
+- Validar colunas esperadas antes de execução em produção.
+- Executar scripts em ambiente virtual dedicado.
+- Revisar logs após cada execução para tratamento de exceções.
+- Homologar em base de teste antes de rodar cargas em ambiente oficial.
+
+## Licença
+Projeto licenciado sob **GPL-3.0**. Consulte o arquivo [LICENSE](LICENSE).

@@ -1,0 +1,7 @@
+pandas
+openpyxl
+rapidfuzz
+sqlalchemy
+psycopg2-binary
+openai
+tabulate

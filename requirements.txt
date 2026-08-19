@@ -5,3 +5,11 @@ sqlalchemy
 psycopg2-binary
 openai
 tabulate
+sqlite3
+unicodedata
+re
+json
+os
+datetime
+geopandas
+dotenv

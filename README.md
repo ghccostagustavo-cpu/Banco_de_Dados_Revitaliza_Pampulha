@@ -27,6 +27,7 @@ Este repositório reúne scripts Python para apoio operacional ao projeto Revita
 - Python 3.10+
 - Ambiente virtual Python (recomendado)
 - Banco SQLite local
+- Banco Postgres em qualquer servidor que se tenha acesso
 - Arquivos Excel de entrada conforme layout esperado nos scripts
 
 ## Instalação
@@ -67,3 +68,6 @@ python src/etl/analista_automatico.py
 
 ## Licença
 Projeto licenciado sob **GPL-3.0**. Consulte [LICENSE](LICENSE).
+
+
+(Só pra aviso, copilot formatou o README e só organizou as pastas do diretório)

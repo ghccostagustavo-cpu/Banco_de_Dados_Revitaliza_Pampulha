@@ -2,7 +2,7 @@
 
 ## Visão geral
 Este repositório reúne scripts Python para apoio operacional ao projeto Revitaliza Pampulha (COPASA), com foco em:
-- sincronização de planilhas para base SQLite;
+- sincronização de planilhas para base Postgres, SQLite anteriormente;
 - auditoria e correção de inconsistências cadastrais;
 - consulta assistida por linguagem natural (somente SELECT).
 
